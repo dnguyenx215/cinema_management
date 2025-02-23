@@ -1,0 +1,123 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <!-- Header Section -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Quản lý phim</h1>
+    <button (click)="openAddForm()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      <span>Thêm phim mới</span>
+    </button>
+  </div>
+
+  <!-- Form Modal cho Thêm/Sửa phim -->
+  <div *ngIf="showForm" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg p-6 w-96">
+      <h2 class="text-xl font-bold mb-4">{{ isEditMode ? 'Sửa phim' : 'Thêm phim mới' }}</h2>
+      <form (ngSubmit)="saveMovie()">
+        <div class="mb-4">
+          <label class="block text-gray-700">Tiêu đề</label>
+          <input [(ngModel)]="currentMovie.title" name="title" type="text" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700">Thể loại</label>
+          <select [(ngModel)]="currentMovie.genre" name="genre" class="w-full px-3 py-2 border rounded-lg" required>
+            <option value="Lựa chọn" disabled selected>Chọn thể loại</option>
+            <option value="Hành động">Hành động</option>
+            <option value="Tâm lý">Tâm lý</option>
+            <option value="Kinh dị">Kinh dị</option>
+            <option value="Hài hước">Hài hước</option>
+            <!-- Thêm các option khác nếu cần -->
+          </select>
+        </div>
+        
+        <div class="mb-4">
+          <label class="block text-gray-700">Thời lượng (phút)</label>
+          <input [(ngModel)]="currentMovie.duration" name="duration" type="number" class="w-full px-3 py-2 border rounded-lg" required>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button type="button" (click)="cancelForm()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Hủy</button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            {{ isEditMode ? 'Lưu thay đổi' : 'Thêm phim' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Search -->
+      <div class="col-span-2">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          (ngModelChange)="searchMovies($event)"
+          placeholder="Tìm kiếm phim..."
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+      <!-- Các bộ lọc khác nếu có -->
+    </div>
+  </div>
+
+  <!-- Movies Table -->
+  <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Phim
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Thể loại
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Thời lượng
+            </th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Thao tác
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let movie of filteredMovies">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ movie.title }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                {{ movie.genre }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ movie.duration }} phút
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex space-x-2 justify-end">
+                <button (click)="openEditForm(movie)" class="text-blue-600 hover:text-blue-900">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                </button>
+                <button (click)="deleteMovie(movie)" class="text-red-600 hover:text-red-900">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

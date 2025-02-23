@@ -1,0 +1,145 @@
+<!-- profile.component.html -->
+<div class="min-h-screen bg-gray-100 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Profile Header -->
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+      <div class="flex flex-col sm:flex-row items-center">
+        <!-- Avatar Section -->
+        <div class="relative mb-4 sm:mb-0 sm:mr-6">
+          <img
+            src="assets/default-avatar.png"
+            alt="Profile picture"
+            class="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+          >
+          <button class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="text-center sm:text-left flex-1">
+          <h1 class="text-2xl font-bold text-gray-900">Nguyễn Văn A</h1>
+          <p class="text-gray-600">Senior Developer</p>
+          <p class="text-gray-500 mt-1">nguyenvana&#64;example.com</p>
+
+          <!-- Social Links -->
+          <div class="mt-4 flex flex-wrap gap-4 justify-center sm:justify-start">
+            <a href="#" class="text-gray-600 hover:text-blue-500">
+              <i class="fab fa-facebook text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-600 hover:text-blue-500">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-600 hover:text-blue-500">
+              <i class="fab fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Edit Button -->
+        <button class="mt-4 sm:mt-0 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
+          Chỉnh sửa Profile
+        </button>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Left Column - Personal Info -->
+      <div class="md:col-span-1">
+        <div class="bg-white shadow rounded-lg p-6">
+          <h2 class="text-xl font-semibold mb-4">Thông tin cá nhân</h2>
+          <div class="space-y-4">
+            <!-- Phone -->
+            <div>
+              <label class="text-sm font-medium text-gray-600">Số điện thoại</label>
+              <p class="text-gray-900">0123 456 789</p>
+            </div>
+            <!-- Address -->
+            <div>
+              <label class="text-sm font-medium text-gray-600">Địa chỉ</label>
+              <p class="text-gray-900">Hà Nội, Việt Nam</p>
+            </div>
+            <!-- Join Date -->
+            <div>
+              <label class="text-sm font-medium text-gray-600">Ngày tham gia</label>
+              <p class="text-gray-900">01/01/2024</p>
+            </div>
+            <!-- Status -->
+            <div>
+              <label class="text-sm font-medium text-gray-600">Trạng thái</label>
+              <div class="flex items-center mt-1">
+                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <p class="text-green-500">Đang hoạt động</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Bio & Skills -->
+      <div class="md:col-span-2">
+        <!-- Bio Section -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+          <h2 class="text-xl font-semibold mb-4">Giới thiệu</h2>
+          <p class="text-gray-700">
+            Tôi là một lập trình viên với hơn 5 năm kinh nghiệm trong việc phát triển các ứng dụng web.
+            Chuyên môn của tôi bao gồm phát triển frontend với Angular và React, cũng như backend với Node.js.
+          </p>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Kỹ năng</h2>
+            <button class="text-blue-500 hover:text-blue-600">
+              <i class="fas fa-plus"></i> Thêm kỹ năng
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              Angular
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              TypeScript
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              Node.js
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              React
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              MongoDB
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+              AWS
+            </span>
+          </div>
+        </div>
+
+        <!-- Activity Section -->
+        <div class="bg-white shadow rounded-lg p-6 mt-6">
+          <h2 class="text-xl font-semibold mb-4">Hoạt động gần đây</h2>
+          <div class="space-y-4">
+            <div class="flex items-center">
+              <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+              <p class="text-gray-600">Cập nhật profile - 2 giờ trước</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+              <p class="text-gray-600">Thêm kỹ năng mới - 1 ngày trước</p>
+            </div>
+            <div class="flex items-center">
+              <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+              <p class="text-gray-600">Đăng nhập - 2 ngày trước</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

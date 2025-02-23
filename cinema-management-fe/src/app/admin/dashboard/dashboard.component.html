@@ -1,0 +1,141 @@
+<div class="flex flex-col p-6 space-y-6 bg-gray-50 min-h-screen">
+  <h1 class="text-3xl font-bold text-gray-800">Thống kê rạp phim</h1>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Total Movies -->
+    <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-600">Tổng số phim</h3>
+          <p class="text-2xl font-bold text-blue-600 mt-2">25</p>
+        </div>
+        <div class="p-3 bg-blue-100 rounded-full">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h18M3 16h18"/>
+          </svg>
+        </div>
+      </div>
+      <p class="mt-2 text-sm text-gray-500">+5% so với tháng trước</p>
+    </div>
+
+    <!-- Tickets Sold -->
+    <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-600">Vé đã bán</h3>
+          <p class="text-2xl font-bold text-green-600 mt-2">1,500</p>
+        </div>
+        <div class="p-3 bg-green-100 rounded-full">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+          </svg>
+        </div>
+      </div>
+      <p class="mt-2 text-sm text-gray-500">+12% so với tuần trước</p>
+    </div>
+
+    <!-- Revenue -->
+    <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-600">Doanh thu</h3>
+          <p class="text-2xl font-bold text-purple-600 mt-2">45.5M</p>
+        </div>
+        <div class="p-3 bg-purple-100 rounded-full">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+      </div>
+      <p class="mt-2 text-sm text-gray-500">+8% so với tháng trước</p>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Sales Chart -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="text-xl font-semibold text-gray-700">Doanh số bán vé</h3>
+      <div class="mt-4 h-80">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Movie Distribution Chart -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+      <h3 class="text-xl font-semibold text-gray-700">Phân bố phim theo thể loại</h3>
+      <div class="mt-4 h-80">
+        <canvas id="movieChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activities Table -->
+  <div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-semibold text-gray-700">Hoạt động gần đây</h3>
+      <button class="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100">
+        Xem tất cả
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Thời gian
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Hoạt động
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Trạng thái
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              20/02/2025
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              Vé bán cho phim "Avengers"
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                Hoàn thành
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              19/02/2025
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              Phim "Titanic" bắt đầu chiếu
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                Đang diễn ra
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              18/02/2025
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              Khách hàng hủy vé phim "Avatar"
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                Đã hủy
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

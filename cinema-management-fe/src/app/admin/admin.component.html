@@ -1,0 +1,89 @@
+<div class="flex">
+   <!-- Sidebar -->
+  <div
+    [ngClass]="isOpen ? 'w-64' : 'w-20'"
+    class="flex transition-all duration-300 h-full min-h-screen bg-gray-900 text-white p-4 fixed top-0 left-0"
+  >
+    <div class="flex flex-col w-full">
+      <button
+        (click)="toggleSidebar()"
+        [ngClass]="{
+          'mb-4': true,
+          'bg-gray-800': true,
+          'p-2': true,
+          rounded: true,
+          flex: true,
+          'items-center': true,
+          'justify-between': true
+        }"
+      >
+        {{ title }}
+        <i class="ps-2 pi pi-bars"></i>
+      </button>
+      <nav class="flex flex-col space-y-4">
+        <app-nav-item
+          icon="pi pi-home"
+          label="Trang chủ"
+          [isOpen]="isOpen"
+          [routerLink]="['']"
+        ></app-nav-item>
+        <!-- Quản lý phim -->
+        <app-nav-item
+          icon="pi pi-video"
+          label="Quản lý phim"
+          [isOpen]="isOpen"
+          [routerLink]="['movie-management']"
+        ></app-nav-item>
+        <!-- Quản lý lịch chiếu -->
+        <app-nav-item
+          icon="pi pi-calendar"
+          label="Quản lý lịch chiếu"
+          [isOpen]="isOpen"
+          [routerLink]="['movie-schedule']"
+        ></app-nav-item>
+        <!-- Quản lý phòng chiếu -->
+        <app-nav-item
+          icon="pi pi-th-large"
+          label="Quản lý phòng chiếu"
+          [isOpen]="isOpen"
+          [routerLink]="['cinema-room-manager']"
+        ></app-nav-item>
+        <!-- Quản lý vé -->
+        <app-nav-item
+          icon="pi pi-ticket"
+          label="Quản lý vé"
+          [isOpen]="isOpen"
+          [routerLink]="['tickets']"
+        ></app-nav-item>
+        <!-- Quản lý khách hàng hạng S -->
+        <app-nav-item
+          icon="pi pi-user"
+          label="Quản lý KH hạng S"
+          [isOpen]="isOpen"
+          [routerLink]="['vip']"
+        ></app-nav-item>
+        <!-- Quản lý voucher -->
+        <app-nav-item
+          icon="pi pi-gift"
+          label="Quản lý voucher"
+          [isOpen]="isOpen"
+          [routerLink]="['vouchers']"
+        ></app-nav-item>
+      </nav>
+
+      <div class="flex flex-col space-y-4 mt-auto">
+        <app-nav-item
+          icon="pi pi-sign-out"
+          label="Logout"
+          [isOpen]="isOpen"
+        ></app-nav-item>
+      </div>
+    </div>
+  </div>
+
+   <!-- Content (Router Outlet) -->
+   <div [ngClass]="{'ml-[calc(256px)]': isOpen, 'ml-[calc(80px)]': !isOpen}" class="flex flex-col w-full min-h-screen bg-gray-100">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
