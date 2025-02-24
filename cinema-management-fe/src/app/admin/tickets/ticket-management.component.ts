@@ -173,8 +173,9 @@ export class TicketManagementComponent implements OnInit {
   getScheduleDetail(scheduleId: number): string {
     const sch = this.schedules.find(s => s.id === scheduleId);
     if (sch) {
+      const date = new Date(sch.startTime).toLocaleDateString();
       const time = new Date(sch.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      return `${time} - ${sch.movie?.title}`;
+      return ` ${time} ${date} - ${sch.movie?.title}`;
     }
     return scheduleId.toString();
   }
