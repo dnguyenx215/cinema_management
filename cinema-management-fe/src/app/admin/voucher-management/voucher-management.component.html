@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gray-50 p-6">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Quản Lý Voucher</h1>
+      <button (click)="openAddForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Thêm Voucher
+      </button>
+    </div>
+  
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-gray-600 text-sm">Tổng Voucher</h2>
+        <p class="text-2xl font-semibold text-gray-800">{{ totalVouchers }}</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-gray-600 text-sm">Voucher Đang Hoạt Động</h2>
+        <p class="text-2xl font-semibold text-gray-800">{{ activeVouchers }}</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-gray-600 text-sm">Voucher Hết Hạn</h2>
+        <p class="text-2xl font-semibold text-gray-800">{{ expiredVouchers }}</p>
+      </div>
+    </div>
+  
+    <!-- Voucher Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">Danh Sách Voucher</h2>
+        <input type="text" placeholder="Tìm voucher theo code..."
+               [(ngModel)]="searchText" (ngModelChange)="searchVouchers($event)"
+               class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiration Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let voucher of filteredVouchers" class="hover:bg-gray-50">
+            <td class="px-6 py-4 text-sm text-gray-900">{{ voucher.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">{{ voucher.code }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">{{ voucher.discount }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">{{ voucher.expirationDate | date:'dd/MM/yyyy' }}</td>
+            <td class="px-6 py-4 text-sm">
+              <span [ngClass]="{
+                'bg-green-100 text-green-800': voucher.isActive,
+                'bg-red-100 text-red-800': !voucher.isActive
+              }" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                {{ voucher.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right text-sm font-medium">
+              <button (click)="openEditForm(voucher)" class="text-blue-600 hover:text-blue-900 mr-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+              </button>
+              <button (click)="deleteVoucher(voucher)" class="text-red-600 hover:text-red-900">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Modal Thêm/Sửa Voucher -->
+    <div *ngIf="showForm" class="fixed z-10 inset-0 overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-black opacity-50"></div>
+        <div class="bg-white rounded-lg shadow-lg z-20 w-full max-w-md p-6">
+          <h2 class="text-xl font-bold mb-4">{{ isEditMode ? 'Sửa Voucher' : 'Thêm Voucher Mới' }}</h2>
+          <form (ngSubmit)="saveVoucher()">
+            <div class="mb-4">
+              <label class="block text-gray-700">Code</label>
+              <input type="text" [(ngModel)]="currentVoucher.code" name="code" class="w-full px-3 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Discount</label>
+              <input type="number" step="0.01" [(ngModel)]="currentVoucher.discount" name="discount" class="w-full px-3 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Expiration Date</label>
+              <input type="date" [(ngModel)]="currentVoucher.expirationDate" name="expirationDate" class="w-full px-3 py-2 border rounded-lg" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Is Active</label>
+              <select [(ngModel)]="currentVoucher.isActive" name="isActive" class="w-full px-3 py-2 border rounded-lg" required>
+                <option [ngValue]="true">Active</option>
+                <option [ngValue]="false">Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end space-x-4">
+              <button type="button" (click)="cancelForm()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Hủy</button>
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+                {{ isEditMode ? 'Lưu thay đổi' : 'Thêm Voucher' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Movie } from '../movies/movie.entity';
+import { Room } from 'src/rooms/room.entity';
 
 @Entity()
 export class Schedule {
@@ -19,6 +20,6 @@ export class Schedule {
   movie: Movie;
 
   // Liên kết với Room -> tuỳ ý, ví dụ:
-  @Column()
-  roomId: number;
+  @ManyToOne(() => Room, { onDelete: 'CASCADE' })
+  room: Room;
 }

@@ -11,13 +11,13 @@ export class SchedulesService {
   ) {}
 
   findAll(): Promise<Schedule[]> {
-    return this.scheduleRepository.find({ relations: ['movie'] });
+    return this.scheduleRepository.find({ relations: ['movie', 'room'] });
   }
 
   async findOne(id: number): Promise<Schedule> {
     const schedule = await this.scheduleRepository.findOne({
       where: { id },
-      relations: ['movie'],
+      relations: ['movie', 'room'],
     });
     if (!schedule) {
       throw new Error(`Schedule with id ${id} not found`);
@@ -32,7 +32,7 @@ export class SchedulesService {
 
   async update(id: number, scheduleData: Partial<Schedule>): Promise<Schedule> {
     await this.scheduleRepository.update(id, scheduleData);
-    const schedule = await this.scheduleRepository.findOne({ where: { id }, relations: ['movie'] });
+    const schedule = await this.scheduleRepository.findOne({ where: { id }, relations: ['movie', 'room'] });
     if (!schedule) {
       throw new Error(`Schedule with id ${id} not found`);
     }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Voucher } from 'src/vouchers/voucher.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Ticket {
@@ -19,4 +20,7 @@ export class Ticket {
 
   @Column({ default: 'booked' }) // booked, canceled, used
   status: string;
+
+  @ManyToOne(() => Voucher, { onDelete: 'CASCADE' })
+  voucher: Voucher;
 }

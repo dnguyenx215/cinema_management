@@ -14,13 +14,13 @@
     <div class="bg-white p-4 rounded-lg shadow mb-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div class="relative">
-          <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchSchedules($event)" placeholder="Tìm kiếm phim..." 
+          <input type="text" [(ngModel)]="searchText" (ngModelChange)="searchSchedules($event)" placeholder="Tìm kiếm lịch..." 
                  class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-        <div>
+        <!-- <div>
           <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Chọn rạp</option>
-            <option *ngFor="let room of rooms" [value]="room">Rạp {{ room }}</option>
+            <option value="">Chọn phòng chiếu</option>
+            <option *ngFor="let room of rooms" [value]="room.id"> {{ room.name }}</option>
           </select>
         </div>
         <div>
@@ -35,7 +35,7 @@
             <option>Đã chiếu</option>
           </select>
         </div>
-      </div>
+      </div> -->
     </div>
   
     <!-- Schedule Table -->
@@ -44,11 +44,11 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phim</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rạp</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng chiếu</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày chiếu</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giờ chiếu</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ghế trống</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vé</th>
+            <!-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ghế trống</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vé</th> -->
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
           </tr>
         </thead>
@@ -63,11 +63,11 @@
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4 text-sm text-gray-500">Rạp {{ schedule.roomId }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500"> {{ schedule.room?.name || '-' }}</td>
             <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.startTime | date:'dd/MM/yyyy' }}</td>
             <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.startTime | date:'HH:mm' }}</td>
-            <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.availableSeats }}</td>
-            <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.ticketPrice | currency:'VND' }}</td>
+            <!-- <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.availableSeats }}</td>
+            <td class="px-6 py-4 text-sm text-gray-500">{{ schedule.ticketPrice | currency:'VND' }}</td> -->
             <td class="px-6 py-4 text-right text-sm font-medium">
               <button (click)="openEditForm(schedule)" class="text-blue-600 hover:text-blue-900 mr-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,16 +146,20 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700">Chọn Phim</label>
-                <select [(ngModel)]="currentSchedule.movie!.id" name="movieId" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <select [(ngModel)]="currentSchedule.movie!.id" name="movie" class="w-full px-3 py-2 border rounded-lg" required>
                   <option value="" disabled selected>Chọn phim</option>
-                  <option *ngFor="let movie of movies" [value]="movie.id">{{ movie.title }}</option>
-                </select>                
+                  <option *ngFor="let movie of movies" [value]="movie.id">
+                    {{ movie.title }}
+                  </option>
+                </select>              
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700">Chọn Phòng chiếu</label>
-                <select [(ngModel)]="currentSchedule.roomId" name="roomId" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                <select [(ngModel)]="currentSchedule.room!.id" name="room" class="w-full px-3 py-2 border rounded-lg" required>
                   <option value="" disabled selected>Chọn phòng chiếu</option>
-                  <option *ngFor="let room of rooms" [value]="room">Phòng chiếu {{ room }}</option>
+                  <option *ngFor="let room of rooms" [value]="room.id">
+                    {{ room.name }} - {{ room.type }}
+                  </option>
                 </select>
               </div>
               <div>

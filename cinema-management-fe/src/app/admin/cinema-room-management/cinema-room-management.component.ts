@@ -59,7 +59,7 @@ export class CinemaRoomManagementComponent implements OnInit {
     this.totalRooms = this.cinemaRooms.length;
     this.activeRooms = this.cinemaRooms.filter(room => room.status === 'Đang hoạt động').length;
     this.maintenanceRooms = this.cinemaRooms.filter(room => room.status === 'Đang bảo trì').length;
-    this.nextShowTotal = this.cinemaRooms.filter(room => room.nextShowtime).length;
+    // this.nextShowTotal = this.cinemaRooms.filter(room => room.nextShowtime).length;
   }
 
   searchRooms(text: string) {
