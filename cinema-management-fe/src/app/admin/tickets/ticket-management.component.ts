@@ -143,7 +143,12 @@ export class TicketManagementComponent implements OnInit {
     const selectedSchedule = this.schedules.find(s => s.id === this.currentTicket.scheduleId);
     if (selectedSchedule && selectedSchedule.room && selectedSchedule.room.seatCount) {
       this.selectedRoom = selectedSchedule.room;
-      this.generateAvailableSeats(selectedSchedule.room.seatCount);
+      
+      const available = this.generateAvailableSeats(selectedSchedule.room.seatCount);
+      // Nếu ghế hiện được chọn không có trong danh sách ghế khả dụng mới, reset lại seatNumber
+      if (!available.includes(this.currentTicket.seatNumber)) {
+        this.currentTicket.seatNumber = '';
+      }
     } else {
       this.availableSeats = [];
     }
@@ -196,31 +201,32 @@ export class TicketManagementComponent implements OnInit {
 
   openAddForm() {
     this.isEditMode = false;
-    if (this.schedules.length > 0) {
-      // Pre-select suất chiếu đầu tiên nếu có
-      this.currentTicket.scheduleId = this.schedules[0].id!;
-      this.onScheduleChange();
-    } else {
-      this.currentTicket.scheduleId = 0;
-      this.availableSeats = [];
-    }
+    // Khởi tạo currentTicket với voucher được khởi tạo sẵn
     this.currentTicket = {
-      scheduleId: this.currentTicket.scheduleId,
+      scheduleId: this.schedules.length > 0 ? this.schedules[0].id! : 0,
       customerId: 0,
       seatNumber: '',
       price: 0,
       status: 'booked',
       voucher: { id: 0, code: '', discount: 0, expirationDate: '', isActive: false }
     };
-    this.showForm = true;
-  }
-
-  openEditForm(ticket: Ticket) {
-    this.isEditMode = true;
-    this.currentTicket = { ...ticket };
+    // Sau khi currentTicket đã có voucher, gọi onScheduleChange để generate ghế
     this.onScheduleChange();
     this.showForm = true;
   }
+  
+  
+  openEditForm(ticket: Ticket) {
+    this.isEditMode = true;
+    this.currentTicket = { ...ticket };
+    if (!this.currentTicket.voucher) {
+      this.currentTicket.voucher = { id: 0, code: '', discount: 0, expirationDate: '', isActive: false };
+    }
+    // Khi mở form sửa, cập nhật danh sách ghế theo schedule đang chọn
+    this.onScheduleChange();
+    this.showForm = true;
+  }
+  
 
   saveTicket() {
     // Xử lý voucher: nếu voucher id bằng 0, loại bỏ voucher; nếu có, chỉ gửi voucher id.
@@ -268,6 +274,7 @@ export class TicketManagementComponent implements OnInit {
             }
           }
           this.tickets.push(newTicket);
+          this.loadTickets();
           this.filteredTickets = [...this.tickets];
           this.computeStats();
           this.showForm = false;

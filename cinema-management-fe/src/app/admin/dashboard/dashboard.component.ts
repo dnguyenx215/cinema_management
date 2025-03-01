@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
         // Phân bố phim theo thể loại
         const distribution: { [genre: string]: number } = {};
         movies.forEach(movie => {
-          const genre = movie.genre || 'Khác';
+          const genre = (movie.categories && movie.categories[0]) || 'Khác';
           distribution[genre] = (distribution[genre] || 0) + 1;
         });
         this.movieDistributionLabels = Object.keys(distribution);

@@ -17,11 +17,24 @@ export class MovieManagementComponent implements OnInit {
   filteredMovies: Movie[] = [];
   searchText: string = '';
 
-  // Biến để điều khiển form thêm/sửa
+  // Biến điều khiển form thêm/sửa
   showForm: boolean = false;
   isEditMode: boolean = false;
-  // Khởi tạo đối tượng phim, lưu ý đảm bảo trường id (với trường hợp thêm mới, id có thể là 0 hoặc undefined tùy backend)
-  currentMovie: Movie = { id: 0, title: '', genre: '', duration: 0, description: '' };
+  
+  // Khởi tạo đối tượng phim với đầy đủ các trường (trailerUrl thay genre)
+  currentMovie: Movie = {
+    id: 0,
+    title: '',
+    trailerUrl: '',
+    duration: 0,
+    description: '',
+    posterUrl: '',
+    categories: [],
+    status: 'now-showing'
+  };
+
+  // Sử dụng biến tạm để nhập danh mục (các thể loại phụ, phân cách bởi dấu phẩy)
+  categoriesInput: string = '';
 
   constructor(private movieService: MovieService) {}
 
@@ -42,7 +55,7 @@ export class MovieManagementComponent implements OnInit {
   }
 
   searchMovies(text: string) {
-    this.filteredMovies = this.movies.filter(movie => 
+    this.filteredMovies = this.movies.filter(movie =>
       movie.title.toLowerCase().includes(text.toLowerCase())
     );
   }
@@ -50,24 +63,39 @@ export class MovieManagementComponent implements OnInit {
   // Mở form thêm mới
   openAddForm() {
     this.isEditMode = false;
-    this.currentMovie = { id: 0, title: '', genre: '', duration: 0, description: '' };
+    this.currentMovie = {
+      id: 0,
+      title: '',
+      trailerUrl: '',
+      duration: 0,
+      description: '',
+      posterUrl: '',
+      categories: [],
+      status: 'now-showing'
+    };
+    this.categoriesInput = '';
     this.showForm = true;
   }
 
   // Mở form sửa với dữ liệu của phim đã chọn
   openEditForm(movie: Movie) {
     this.isEditMode = true;
-    // Dùng spread để clone đối tượng tránh thay đổi trực tiếp
+    // Clone dữ liệu để tránh thay đổi trực tiếp
     this.currentMovie = { ...movie };
+    this.categoriesInput = movie.categories ? movie.categories.join(', ') : '';
     this.showForm = true;
   }
 
   // Xử lý lưu phim (thêm hoặc cập nhật)
   saveMovie() {
+    // Chuyển đổi danh mục từ chuỗi thành mảng
+    this.currentMovie.categories = this.categoriesInput
+      ? this.categoriesInput.split(',').map(cat => cat.trim())
+      : [];
+
     if (this.isEditMode) {
       this.movieService.updateMovie(this.currentMovie).subscribe({
         next: () => {
-          // Cập nhật lại danh sách phim
           const index = this.movies.findIndex(m => m.id === this.currentMovie.id);
           if (index !== -1) {
             this.movies[index] = this.currentMovie;
@@ -81,12 +109,12 @@ export class MovieManagementComponent implements OnInit {
       });
     } else {
       this.movieService.addMovie(this.currentMovie).subscribe({
-        next: (newMovie : Movie) => {
+        next: (newMovie: Movie) => {
           this.movies.push(newMovie);
           this.filteredMovies = [...this.movies];
           this.showForm = false;
         },
-        error: (error : any) => {
+        error: (error: any) => {
           console.error('Error adding movie:', error);
         }
       });
@@ -101,7 +129,7 @@ export class MovieManagementComponent implements OnInit {
           this.movies = this.movies.filter(m => m.id !== movie.id);
           this.filteredMovies = [...this.movies];
         },
-        error: (error : any) => {
+        error: (error: any) => {
           console.error('Error deleting movie:', error);
         }
       });
