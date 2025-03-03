@@ -16,6 +16,11 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.apiUrl);
   }
 
+  getCustomerByEmail(email: string): Observable<Customer> {
+    return this.http.get<Customer>(this.apiUrl + '/find-by-email/' + email);
+  }
+
+
   // Thêm khách hàng mới
   addCustomer(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.apiUrl, customer);

@@ -11,15 +11,19 @@ import { LoginComponent } from './auth/login.component';
 import { RegisterComponent } from './auth/register.component';
 import { AdminComponent } from './admin/admin.component';
 import { CustomerComponent } from './customer/customer.component';
+import { AdminAuthGuard } from './auth/admin-auth.guard';
+import { PaymentComponent } from './payment/payment.component';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'customer', pathMatch: 'full' },
+  
   { path: 'customer', component: CustomerComponent },
+  { path: 'management/login', component: LoginComponent },
   {
     path: 'admin',
     component: AdminComponent,
+    canActivateChild: [AdminAuthGuard], 
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -31,5 +35,6 @@ export const routes: Routes = [
       {path: 'vip', component: CustomerManagementComponent},
       {path: 'voucher', component: VoucherManagementComponent}
     ]
-  }
+  },
+  { path: 'payment', component: PaymentComponent },
 ];

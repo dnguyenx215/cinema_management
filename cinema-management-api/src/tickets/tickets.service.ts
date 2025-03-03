@@ -22,6 +22,13 @@ export class TicketsService {
     return ticket;
   }
 
+  getTicketsBySchedule(scheduleId: number): Promise<Ticket[]> {
+    return this.ticketRepository.find({
+      where: { scheduleId: scheduleId },
+      relations: ['voucher'], 
+    });
+  }
+
   create(ticketData: Partial<Ticket>): Promise<Ticket> {
     const ticket = this.ticketRepository.create(ticketData);
     return this.ticketRepository.save(ticket);

@@ -18,7 +18,14 @@ export interface Schedule {
     type?: string; // 2D, 3D, IMAX, ...
     // Các trường bổ sung do front-end tính (nếu cần)
     status?: string;
-  } | null;
+  } ;
   availableSeats?: number;
   ticketPrice?: number;
+  seats?: Seat[];
+}
+
+export interface Seat {
+  row: string;
+  number: number;
+  status: 'available' | 'reserved' | 'selected';
 }

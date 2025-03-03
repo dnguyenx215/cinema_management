@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { Ticket } from './ticket.entity';
 
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketsService: TicketsService) { }
 
   @Get()
   findAll() {
     return this.ticketsService.findAll();
   }
+
+  @Get('by-schedule')
+  async getTicketsBySchedule(@Query('scheduleId') scheduleId: number): Promise<Ticket[]> {
+    return this.ticketsService.getTicketsBySchedule(scheduleId);
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

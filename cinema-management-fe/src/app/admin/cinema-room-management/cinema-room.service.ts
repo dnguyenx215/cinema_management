@@ -7,6 +7,8 @@ import { CinemaRoom } from './cinema-room.interface';
   providedIn: 'root'
 })
 export class CinemaRoomService {
+ 
+  
   private apiUrl = 'http://localhost:3000/rooms'; // API endpoint
 
   constructor(private http: HttpClient) {}
@@ -14,6 +16,10 @@ export class CinemaRoomService {
   // Lấy danh sách phòng chiếu
   getRooms(): Observable<CinemaRoom[]> {
     return this.http.get<CinemaRoom[]>(this.apiUrl);
+  }
+
+  getRoom(id: any): Observable<CinemaRoom> {
+    throw new Error('Method not implemented.');
   }
 
   // Thêm phòng chiếu mới

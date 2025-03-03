@@ -7,6 +7,7 @@ import { Ticket } from './ticket.interface';
   providedIn: 'root'
 })
 export class TicketService {
+  
   private apiUrl = 'http://localhost:3000/tickets';
 
   constructor(private http: HttpClient) {}
@@ -15,6 +16,11 @@ export class TicketService {
   getTickets(): Observable<Ticket[]> {
     return this.http.get<Ticket[]>(this.apiUrl);
   }
+
+  getTicketsBySchedule(scheduleId: number): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(this.apiUrl + '/by-schedule?scheduleId=' + scheduleId);
+  }
+  
 
   // Thêm vé mới
   addTicket(ticket: Ticket): Observable<Ticket> {

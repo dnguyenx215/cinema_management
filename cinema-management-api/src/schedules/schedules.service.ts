@@ -25,6 +25,14 @@ export class SchedulesService {
     return schedule;
   }
 
+  getSchedulesByMovie(movieId: number): Promise<Schedule[]> {
+    return this.scheduleRepository.find({
+      where: { movie: { id: movieId } },
+      relations: ['movie', 'room'],
+    });
+  }
+  
+
   create(scheduleData: Partial<Schedule>): Promise<Schedule> {
     const schedule = this.scheduleRepository.create(scheduleData);
     return this.scheduleRepository.save(schedule);

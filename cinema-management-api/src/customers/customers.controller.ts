@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { Customer } from './customer.entity';
+import e from 'express';
 
 @Controller('customers')
 export class CustomersController {
@@ -14,6 +15,12 @@ export class CustomersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.customersService.findOne(+id);
+  }
+
+  // Lấy customer theo email
+  @Get('find-by-email/:email')
+  async findByEmail(@Param('email') email: string): Promise<Customer | null> {
+    return await this.customersService.findByEmail(email);
   }
 
   @Post()
