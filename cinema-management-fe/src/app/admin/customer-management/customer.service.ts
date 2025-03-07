@@ -7,6 +7,7 @@ import { Customer } from './customer.interface';
   providedIn: 'root'
 })
 export class CustomerService {
+  
   private apiUrl = 'http://localhost:3000/customers'; // Đường dẫn API backend của bạn
 
   constructor(private http: HttpClient) {}
@@ -20,6 +21,9 @@ export class CustomerService {
     return this.http.get<Customer>(this.apiUrl + '/find-by-email/' + email);
   }
 
+  findOne(customerId: any): Observable<Customer> {
+    return this.http.get<Customer>(this.apiUrl + '/' + customerId);
+  }
 
   // Thêm khách hàng mới
   addCustomer(customer: Customer): Observable<Customer> {

@@ -7,6 +7,7 @@ import { Schedule } from './schedule.interface';
     providedIn: 'root'
   })
   export class ScheduleService {
+    
   
     private apiUrl = 'http://localhost:3000/schedules';
   
@@ -20,6 +21,10 @@ import { Schedule } from './schedule.interface';
       return this.http.get<Schedule[]>(this.apiUrl + '/find?movieId=' + id);
     }
   
+    findOne(scheduleId: any): Observable<Schedule>  {
+      return this.http.get<Schedule>(this.apiUrl + '/' + scheduleId);
+  }
+
     addSchedule(schedule: Schedule): Observable<Schedule> {
       return this.http.post<Schedule>(this.apiUrl, schedule);
     }

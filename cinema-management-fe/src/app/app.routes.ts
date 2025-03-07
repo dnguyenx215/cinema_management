@@ -13,6 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { CustomerComponent } from './customer/customer.component';
 import { AdminAuthGuard } from './auth/admin-auth.guard';
 import { PaymentComponent } from './payment/payment.component';
+import { PaidComponent } from './payment/paid.component';
 
 
 export const routes: Routes = [
@@ -37,4 +38,5 @@ export const routes: Routes = [
     ]
   },
   { path: 'payment', component: PaymentComponent },
+  { path: 'paid', component: PaidComponent },
 ];
