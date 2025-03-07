@@ -1,0 +1,224 @@
+<!-- HEADER -->
+<header class="relative text-white h-[500px]">
+  <div class="absolute inset-0 overflow-hidden">
+    <img alt="{{ bannerMovie.title || 'Banner' }}" class="w-full h-full object-cover"
+      [src]="bannerMovie.posterUrl || 'https://via.placeholder.com/1200x500?text=Banner'">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black"></div>
+  </div>
+  <div class="relative z-10 flex flex-col h-full">
+    <!-- Navbar -->
+    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <img alt="Logo" class="w-12 h-12" height="50"
+          src="https://storage.googleapis.com/a1aa/image/rFfsWtymodWLpuczkVzphZ7N1-5QcPQhEhgyIbMAsSI.jpg" width="50">
+        <nav class="space-x-4">
+          <a class="text-white hover:text-red-500 transition-colors" href="#">Mua vé</a>
+          <a class="text-white hover:text-red-500 transition-colors" href="#">Phim</a>
+          <a class="text-white hover:text-red-500 transition-colors" href="#">Rạp phim</a>
+          <a class="text-white hover:text-red-500 transition-colors" href="#">Thông tin</a>
+          <a class="text-white hover:text-red-500 transition-colors" href="#">Liên hệ</a>
+        </nav>
+      </div>
+      <div>
+        <i class="fas fa-search text-white hover:text-red-500 transition-colors"></i>
+      </div>
+    </div>
+    <!-- Banner nội dung -->
+    <div class="container mx-auto px-4 mt-auto pb-12">
+      <h1 class="text-4xl font-bold">
+        {{ bannerMovie.title || 'Đang cập nhật' }}
+      </h1>
+      <p class="mt-4 max-w-2xl leading-relaxed">
+        {{ bannerMovie.description || 'Thông tin phim sẽ được cập nhật sớm.' }}
+      </p>
+      <div class="mt-4 flex items-center space-x-4">
+        <button (click)="openBookingForMovie(bannerMovie)"
+          class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-colors">
+          Đặt vé ngay
+        </button>
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Chi tiết</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="mx-auto px-4 py-6 text-white bg-black min-h-screen">
+  <div *ngIf="loading" class="text-center text-lg">Đang tải...</div>
+  <div *ngIf="error" class="text-center text-red-500">{{ error }}</div>
+
+  <!-- Phim đang chiếu -->
+  <section *ngIf="!loading && !error" class="mb-12 container mx-auto">
+    <h2 class="text-2xl font-bold mb-4">Đang chiếu tại rạp</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div *ngFor="let movie of nowShowingMovies" (click)="openTrailer(movie)"
+        class="bg-gray-800 cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transform hover:scale-105 transition-all relative flex flex-col ">
+        <img [alt]="movie.title" class="w-full h-72 object-fill" [src]="movie.posterUrl">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="text-lg font-bold truncate">{{ movie.title }}</h3>
+          <p class="text-sm">{{ movie.duration }} phút</p>
+          <div class="flex flex-wrap space-x-2 mt-2 mb-4">
+            <span *ngFor="let cat of movie.categories" class="bg-gray-700 text-white text-xs px-2 py-1 rounded">
+              {{ cat }}
+            </span>
+          </div>
+          <div class="mt-auto">
+            <button (click)="openBookingForMovie(movie); $event.stopPropagation()"
+              class="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-colors">
+              Đặt vé
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phim sắp chiếu -->
+  <section *ngIf="!loading && !error" class="container mx-auto mb-12">
+    <h2 class="text-2xl font-bold mb-4">Phim sắp chiếu</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div *ngFor="let movie of comingSoonMovies" (click)="openTrailer(movie)"
+        class="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transform hover:scale-105 transition-all cursor-pointer relative">
+        <img [alt]="movie.title" class="w-full h-64 object-fill" [src]="movie.posterUrl" width="300">
+        <div class="p-4">
+          <h3 class="text-lg font-bold truncate">{{ movie.title }}</h3>
+          <p class="text-sm">{{ movie.duration }} phút</p>
+          <div class="flex space-x-2 mt-2">
+            <span *ngFor="let cat of movie.categories" class="bg-gray-700 text-white text-xs px-2 py-1 rounded">
+              {{ cat }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-black py-6">
+  <div class="container mx-auto px-4 flex justify-center items-center">
+    <div class="flex items-center space-x-4">
+      <img alt="Logo" class="w-12 h-12" height="50"
+        src="https://storage.googleapis.com/a1aa/image/rFfsWtymodWLpuczkVzphZ7N1-5QcPQhEhgyIbMAsSI.jpg" width="50">
+      <nav class="space-x-4">
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Mua vé</a>
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Phim</a>
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Rạp phim</a>
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Thông tin</a>
+        <a class="text-white hover:text-red-500 transition-colors" href="#">Liên hệ</a>
+      </nav>
+    </div>
+    <div class="flex space-x-4">
+      <a class="text-white hover:text-red-500 transition-colors" href="#">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a class="text-white hover:text-red-500 transition-colors" href="#">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal Trailer -->
+<div *ngIf="showTrailerModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity"
+  (click)="closeTrailer()">
+  <div (click)="$event.stopPropagation()"
+    class="bg-white p-6 rounded-lg shadow-xl w-full max-w-3xl relative transform scale-95 transition-transform"
+    [class.scale-100]="showTrailerModal">
+    <button (click)="closeTrailer()" class="absolute top-4 right-4 text-gray-700 hover:text-red-700 text-2xl">
+      &times;
+    </button>
+    <div class="aspect-w-16 aspect-h-9 mt-8">
+      <iframe class="w-full h-[500px]" [src]="safeTrailerUrl" frameborder="0" allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Modal chọn suất chiếu -->
+<div *ngIf="showtimeModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-md relative">
+    <button (click)="closeShowtimeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+      &times;
+    </button>
+    <h2 class="text-2xl font-bold mb-4">Chọn suất chiếu</h2>
+    <div *ngIf="movieSchedules.length > 0; else noSchedule">
+      <div *ngFor="let sch of movieSchedules" class="border-b py-2">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="font-semibold">
+              {{ sch.startTime | date:'dd/MM/yyyy - HH:mm' }} - {{ sch.room.name }} ({{ sch.room.type }})
+            </p>
+          </div>
+          <button (click)="selectSchedule(sch)"
+            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors">
+            Chọn
+          </button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noSchedule>
+      <p class="text-center text-gray-500">Không có suất chiếu nào!</p>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal chọn ghế -->
+<div *ngIf="showSeatModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-lg relative">
+    <button (click)="closeSeatModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+      &times;
+    </button>
+    <h2 class="text-2xl font-bold mb-4">Chọn ghế</h2>
+    <p class="text-sm mb-2" *ngIf="selectedSchedule">
+      Suất chiếu: {{ selectedSchedule.startTime | date:'dd/MM/yyyy - HH:mm' }} - {{ selectedSchedule.room.name }} ({{ selectedSchedule.room.type }})
+    </p>
+    <div class="grid grid-cols-10 gap-2">
+      <button *ngFor="let seat of selectedSchedule?.seats" (click)="toggleSeat(seat)" [ngClass]="{
+                'bg-green-500': seat.status === 'available',
+                'bg-red-500': seat.status === 'reserved',
+                'bg-yellow-500': seat.status === 'selected'
+              }" class="w-10 h-10 rounded-md text-white text-sm">
+        {{ seat.row }}{{ seat.number }}
+      </button>
+    </div>
+    <div class="mt-4">
+      <button (click)="confirmBooking()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        Xác nhận đặt vé
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal nhập email khách hàng -->
+<div *ngIf="showEmailModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-md relative">
+    <button (click)="closeEmailModal()"
+      class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+    <h2 class="text-2xl font-bold mb-4">Nhập Email của bạn</h2>
+    <input [(ngModel)]="customerEmail" type="email" placeholder="Nhập email"
+      class="border border-gray-300 rounded p-2 w-full mb-4">
+    <button (click)="checkCustomerByEmail()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Xác
+      nhận</button>
+  </div>
+</div>
+
+<!-- Modal nhập thông tin khách hàng mới -->
+<div *ngIf="showCustomerModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="bg-white text-black p-6 rounded-lg shadow-xl w-full max-w-md relative">
+    <button (click)="closeCustomerModal()"
+      class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+    <h2 class="text-2xl font-bold mb-4">Nhập Thông Tin Khách Hàng</h2>
+    <input [(ngModel)]="newCustomer.name" type="text" placeholder="Họ tên"
+      class="border border-gray-300 rounded p-2 w-full mb-4">
+    <input [(ngModel)]="newCustomer.email" type="email" placeholder="Email"
+      class="border border-gray-300 rounded p-2 w-full mb-4">
+    <input [(ngModel)]="newCustomer.phone" type="text" placeholder="Số điện thoại"
+      class="border border-gray-300 rounded p-2 w-full mb-4">
+    <button (click)="createCustomer()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Xác
+      nhận</button>
+  </div>
+</div>

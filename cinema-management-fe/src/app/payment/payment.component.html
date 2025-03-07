@@ -1,0 +1,36 @@
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Thanh Toán Vé</h2>
+    
+    <!-- Hiển thị thông tin vé ảo -->
+    <div *ngIf="aggregatedTicket" class="border p-4 my-4 rounded shadow-md bg-gray-50">
+      <h3 class="text-xl font-semibold mb-2">Thông tin đặt vé</h3>
+      <!-- <p><strong>Mã Vé:</strong> {{ aggregatedTicket.aggregatedTicketId }}</p> -->
+      <div>
+        <strong>Suất Chiếu:</strong>
+        <div>
+          {{ aggregatedTicket.scheduleInfo.name }}<br>
+          <small>Thời gian: {{ aggregatedTicket.scheduleInfo.time | date: 'dd/MM/yyyy - HH:mm' }} | Phòng: {{ aggregatedTicket.scheduleInfo.room }}</small>
+        </div>
+      </div>
+      <div class="mt-2">
+        <strong>Khách Hàng:</strong>
+        <div>
+          {{ aggregatedTicket.customerInfo.name }}
+        </div>
+      </div>
+      <p class="mt-2"><strong>Ghế:</strong> {{ aggregatedTicket.seats }}</p>
+      <p class="mt-2"><strong>Tổng Tiền:</strong> {{ aggregatedTicket.totalPrice | currency:'VND' }}</p>
+    </div>
+    
+    <!-- Nút thanh toán -->
+    <div *ngIf="bookingData">
+      <button (click)="onPayNow()" class="bg-blue-600 text-white px-4 py-2 rounded">
+        Thanh toán VNPay
+      </button>
+    </div>
+    
+    <div *ngIf="!bookingData">
+      <p>Không có vé nào để thanh toán.</p>
+    </div>
+  </div>
+  

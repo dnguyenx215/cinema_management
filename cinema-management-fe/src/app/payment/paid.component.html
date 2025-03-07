@@ -1,0 +1,43 @@
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">Kết Quả Thanh Toán</h2>
+    
+    <div *ngIf="paymentStatus === 'processing'">
+      <p>Đang xử lý đặt vé, vui lòng chờ...</p>
+    </div>
+    
+    <div *ngIf="paymentStatus === 'success'">
+      <p class="text-green-600">{{ message }}</p>
+      
+      <!-- Hiển thị mã QR -->
+      <div class="my-4">
+        <p class="mb-2">Quét mã QR để xem thông tin vé:</p>
+        <img [src]="qrCodeUrl" alt="QR Code">
+      </div>
+      
+      <!-- Thiết kế vé ảo -->
+      <div class="border p-4 my-4 rounded shadow-md bg-gray-50">
+        <h3 class="text-xl font-semibold mb-2">Vé Điện tử</h3>
+        <p><strong>Mã Vé:</strong> {{ aggregatedTicket.aggregatedTicketId }}</p>
+        <p>
+          <strong>Suất Chiếu:</strong>
+          {{ aggregatedTicket.scheduleInfo.name }}<br>
+          <small>Thời gian: {{ aggregatedTicket.scheduleInfo.time | date:'dd/MM/yyyy - HH:mm' }} | Phòng: {{ aggregatedTicket.scheduleInfo.room }} </small>
+        </p>
+        <p><strong>Tên Khách Hàng:</strong> {{ aggregatedTicket.customerInfo.name }}</p>
+        <p><strong>Ghế:</strong> {{ aggregatedTicket.seats }}</p>
+        <p><strong>Tổng Tiền:</strong> {{ aggregatedTicket.totalPrice | currency:'VND' }}</p>
+      </div>
+      
+      <button (click)="redirectHome()" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">
+        Về trang chủ
+      </button>
+    </div>
+    
+    <div *ngIf="paymentStatus === 'failed'">
+      <p class="text-red-600">{{ message }}</p>
+      <button (click)="redirectHome()" class="bg-blue-600 text-white px-4 py-2 rounded mt-4">
+        Về trang chủ
+      </button>
+    </div>
+  </div>
+  
